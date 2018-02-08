@@ -1,0 +1,34 @@
+* {
+    box-sizing: border-box;
+}
+
+.dezes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.deze {
+    width: 500px;
+    height: 500px;
+    background-color: grey;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-self: center;
+}
+
+#detales {
+    width: 550px;
+    height: 550px;
+}
+
+#visa-nuotrauka {
+    width: 100%;
+    height: auto;
+}
+
+.palaidas {
+    height: 50px;
+    margin: 2px;
+}
