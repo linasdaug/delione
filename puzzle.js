@@ -1,30 +1,19 @@
-//
-// function leisti(event) {
-//     event.preventDefault();
-// }
-//
-// function traukti(event) {
-//     ev.dataTransfer.setData("text", ev.target.id);
-// }
-//
-// function padetiIVieta(event) {
-//     event.preventDefault();
-//     var data = event.dataTransfer.getData("text");
-//     event.target.appendChild(document.getElementById(data));
-// }
-//
-// function atkirpti(image, x, y, plotis, aukstis) {
-//
-//     let canvas = document.createElement('canvas'),
-//         ctx = canvas.getContext('2d');
-//
-//     canvas.width = plotis;
-//     canvas.height = aukstis;
-//     ctx.drawImage(image, x, y, plotis, aukstis);
-//     return canvas;
-// }
-//
-//
+
+function leisti(event) {
+    event.preventDefault();
+}
+
+function traukti(event) {
+    event.dataTransfer.setData("text", event.target.id);
+}
+
+function padetiIVieta(event) {
+    event.preventDefault();
+    var data = event.dataTransfer.getData("text");
+    event.target.appendChild(document.getElementById(data));
+}
+
+
 function isdelioti() {
     console.log("deliojam");
 
@@ -41,9 +30,13 @@ function isdelioti() {
                 let newDiv = document.createElement("div");
                 newDiv.setAttribute("id", k);
                 newDiv.setAttribute("class", "palaidas");
+                newDiv.setAttribute("draggable", "true");
+                newDiv.setAttribute("ondragstart", "traukti(event)");
                 let canvas = document.createElement("canvas");
                 canvas.setAttribute("width", 50);
                 canvas.setAttribute("height", 50);
+                // canvas.setAttribute("draggable", "true");
+                // newDiv.setAttribute("ondragstart", "traukti(event)");
 
                 let ctx = canvas.getContext('2d');
                 ctx.drawImage(image, 50*i, 50*j, 50, 50, 0, 0, 50, 50);
