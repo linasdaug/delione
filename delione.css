@@ -35,6 +35,7 @@ a {
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-around;
+    align-items: flex-start;
 }
 
 .titulinis-thumbnail {
@@ -84,8 +85,8 @@ a {
 }
 
 .stalas-container {
-    width: 520px;
-    height: 520px;
+    min-width: 520px;
+    min-height: 520px;
     position: relative;
     margin: 50px 25px;
 }
@@ -96,7 +97,7 @@ a {
 
 .stalas {
     position: absolute;
-    width: 500px;
+    min-width: 500px;
     top: 10px;
     left: 10px;
     z-index: 1;
@@ -111,9 +112,10 @@ a {
 }
 
 .deze {
-    width: 550px;
-    height: 550px;
+    min-width: 550px;
     align-items: flex-start;
+    max-width: 100%;
+    min-height: 55px;
 }
 
 .palaidas {

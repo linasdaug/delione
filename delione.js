@@ -39,23 +39,43 @@ function padetiIVieta(event) {
 
 
 function isdelioti() {
-    console.log("deliojam");
-    let image  = new Image();
+    let image = new Image();
+    image.src = 'img/ramybe.jpg';
+    let w = image.naturalWidth;
+    let h = image.naturalHeight;
+    let proporcija = w / h;
+    let langelioPlotis = 50;
+    let langeliuSk_W = 10;
+    let langeliuSk_H = 10;
+    let sideOffset = 10;
+    let updownOffset = 10;
+    if (proporcija > 1) {
+        langelioPlotis = Math.floor((h - 20)/10);
+        langeliuSk_W = Math.floor(w / langelioPlotis);
+        sideOffset = Math.round((w % langelioPlotis) / 2);
+    } else {
+        langelioPlotis = Math.floor((w - 20)/10);
+        langeliuSk_H = Math.floor(h / langelioPlotis);
+        updownOffset = Math.round((h % langelioPlotis) / 2);
+    };
+
+    let k = 0;
+
     image.onload = function(){
-        let k = 0;
+
         let darboStalas = document.getElementById("detales");
         let krepselis = [];
-        for(i = 0; i < 10; i++){
-            for (var j = 0; j < 10; j++) {
+        for (i = 0; i < langeliuSk_H; i++){
+            for (var j = 0; j < langeliuSk_W; j++) {
                 let canvas = document.createElement("canvas");
-                canvas.setAttribute("width", 50);
-                canvas.setAttribute("height", 50);
+                canvas.setAttribute("width", langelioPlotis);
+                canvas.setAttribute("height", langelioPlotis);
                 canvas.setAttribute("id", k);
                 canvas.setAttribute("draggable", "true");
                 canvas.setAttribute("ondragstart", "traukti(event)");
                 canvas.classList.add("palaidas");
                 let ctx = canvas.getContext('2d');
-                ctx.drawImage(image, 10+50*j, 10+50*i, 50, 50, 0, 0, 50, 50);
+                ctx.drawImage(image, sideOffset+langelioPlotis*j, updownOffset+langelioPlotis*i, langelioPlotis, langelioPlotis, 0, 0, langelioPlotis, langelioPlotis);
                 krepselis[k] = canvas;
                 k++;
             }
@@ -66,30 +86,36 @@ function isdelioti() {
             let newCanvas = krepselis[i];
             darboStalas.appendChild(newCanvas);
             krepselis.splice(i, 1);
-        }
+        };
     };
-      image.src = 'img/goddess.jpg';
+    document.getElementById('remas').style.width = langeliuSk_W * langelioPlotis + (sideOffset * 2) + "px";
+    document.getElementById('remas').style.height = langeliuSk_H * langelioPlotis + (updownOffset * 2) + "px";
+    document.getElementById('delione').style.width = langeliuSk_W * langelioPlotis + "px";
+    document.getElementById('delione').style.height = langeliuSk_H * langelioPlotis + "px";
+    document.getElementById('delione').style.top = updownOffset + "px";
+    document.getElementById('delione').style.left = sideOffset + "px";
 }
 
 function paruostiStala() {
-    let k = 0;
     let delione = document.getElementById("delione");
-    for(i = 0; i < 10; i++){
-        for (var j = 0; j < 10; j++) {
+    let sk = document.getElementById("detales").getAttribute("value");
+    console.log("detales: " + sk);
+    for (let i = 0; i < 150; i++) {
             let newDiv = document.createElement("div");
-            newDiv.setAttribute("value", k);
             newDiv.setAttribute("class", "langelis");
             newDiv.setAttribute("ondrop", "padetiIVieta(event)");
             newDiv.setAttribute("ondragover", "leisti(event)");
             delione.appendChild(newDiv);
-            k++;
         }
-    }
 }
 
-
-
-$(document).ready(function(){
+function pradzia() {
     isdelioti();
     paruostiStala();
-});
+}
+
+//
+// $(document).ready(function(){
+//     isdelioti();
+//     paruostiStala();
+// });
