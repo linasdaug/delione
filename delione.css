@@ -5,7 +5,7 @@
 }
 
 body {
-    background: url('fonas.png') repeat;
+    background: url('img/fonelis.jpg') repeat;
 }
 
 a {
@@ -56,20 +56,17 @@ a {
     padding: 10px;
 }
 
-.pavyzdys {
-    margin: 50px auto;
-    background-color: rgba(250,235,215, 0.7);
-    text-align: center;
-}
 
-.pavyzdys img {
-    width: 500px;
-    margin: 25px auto;
-    transform: scale(0.75, 0.75);
+#visa-nuotrauka {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 25%;
+    transform: scale(0.5, 0.5);
     transition: transform 1s;
 }
 
-.pavyzdys img:hover {
+#visa-nuotrauka:hover {
     transform: scale(1, 1);
 }
 
@@ -101,7 +98,7 @@ a {
     top: 10px;
     left: 10px;
     z-index: 1;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 
@@ -112,9 +109,8 @@ a {
 }
 
 .deze {
-    min-width: 550px;
+    max-width: 400px;
     align-items: flex-start;
-    max-width: 100%;
     min-height: 55px;
 }
 
@@ -129,7 +125,21 @@ a {
 }
 
 .langelis {
-    width: 50px;
-    height: 50px;
     border: 1px dotted antiquewhite;
+    position: relative;
+}
+
+.padetas {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+}
+
+footer {
+    text-align: center;
+}
+
+.footer-info {
+    padding: 25px;
+    color: grey;
 }
