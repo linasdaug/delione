@@ -13,37 +13,94 @@ function leisti(event) {
 }
 
 function traukti(event) {
-    event.dataTransfer.setData("text", event.target.id);
+    // event.dataTransfer.setData("text", event.target.id);
+
+
+/*insertas:*/
+    let style = window.getComputedStyle(event.target, null);
+    let str = (parseInt(style.getPropertyValue("left")) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top")) - event.clientY)+ ',' + event.target.id;
+    event.dataTransfer.setData("Text",str);
+
+
     event.dataTransfer.dropEffect = "move";
     let langelis = event.target.parentElement;
     langelis.classList.remove("pilnas");
 }
 
-function padetiIVieta(event) {
+function padeti(event) {
     event.preventDefault();
-    let data = event.dataTransfer.getData("text");
-    let detales = document.getElementById("detales");
-    if (event.target.classList.contains("pilnas") || event.target.classList.contains("padetas")) {
-        return;
-    } else if (event.target.classList.contains("palaidas")) {
-        detales.appendChild(document.getElementById(data));
-        document.getElementById(data).classList.remove("padetas");
-        document.getElementById(data).classList.add("palaidas");
 
+    var offset = event.dataTransfer.getData("Text").split(',');
+    var dm = document.getElementById(offset[2]);
+
+
+    if (offset[2] == 'visa-nuotrauka') {
+        dm.style.left = (event.clientX + parseInt(offset[0])) + 'px';
+        dm.style.top = (event.clientY + parseInt(offset[1])) + 'px';
+        event.preventDefault();
+        return
     } else {
-        event.target.appendChild(document.getElementById(data));
-
-        if (!event.target.classList.contains("deze")) {
-        event.target.classList.add("pilnas");
-        document.getElementById(data).classList.add("padetas");
-        document.getElementById(data).classList.remove("palaidas");
-        } else {
-        document.getElementById(data).classList.remove("padetas");
-        document.getElementById(data).classList.add("palaidas");
-        }
+        return;
     }
 }
 
+
+function padetiIVieta(event) {
+    event.preventDefault();
+
+    // let data = event.dataTransfer.getData("text");
+/*insertas:*/
+    var offset = event.dataTransfer.getData("Text").split(',');
+    var dm = document.getElementById(offset[2]);
+
+    if (offset[2] == 'visa-nuotrauka') {
+        return
+    }
+
+    let detales = document.getElementById("detales");
+
+    if (event.target.classList.contains("pilnas") || event.target.classList.contains("padetas")) {
+        return;
+    } else if (event.target.classList.contains("palaidas")) {
+        detales.appendChild(document.getElementById(offset[2]));     /*data*/
+        document.getElementById(offset[2]).classList.remove("padetas");
+        document.getElementById(offset[2]).classList.add("palaidas");
+
+    } else {
+        event.target.appendChild(document.getElementById(offset[2]));     /*data*/
+
+        if (!event.target.classList.contains("deze")) {
+        event.target.classList.add("pilnas");
+        document.getElementById(offset[2]).classList.add("padetas");    /*data*/
+        document.getElementById(offset[2]).classList.remove("palaidas");
+        } else {
+        document.getElementById(offset[2]).classList.remove("padetas");
+        document.getElementById(offset[2]).classList.add("palaidas");
+        }
+    }
+}
+//
+// function visa_nuotrauka_drag_start(event) {
+//     let style = window.getComputedStyle(event.target, null);
+//     let str = (parseInt(style.getPropertyValue("left")) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top")) - event.clientY)+ ',' + event.target.id;
+//     event.dataTransfer.setData("Text",str);
+// }
+//
+// function visa_nuotrauka_drop(event) {
+//     var offset = event.dataTransfer.getData("Text").split(',');
+//     console.log(offset);
+//     var dm = document.getElementById(offset[2]);
+//     dm.style.left = (event.clientX + parseInt(offset[0])) + 'px';
+//     dm.style.top = (event.clientY + parseInt(offset[1])) + 'px';
+//     event.preventDefault();
+//     // return false;
+// }
+//
+// function visa_nuotrauka_drag_over(event) {
+//     event.preventDefault();
+//     // return false;
+// }
+//
 
 /* FUNKCIJŲ PABAIGA */
 
@@ -60,7 +117,6 @@ function isdelioti(image) {
     let h = image.naturalHeight;
     let proporcija = w / h;
     let langeliuSk_W, langeliuSk_H;
-    console.log(proporcija);
 
     if (proporcija <= 1) {
         image.width = langelioPlotis * 10 + 20;      /*10 langeliu ir remelis*/
@@ -79,7 +135,6 @@ function isdelioti(image) {
             langelioAukstis += Math.round(((image.height % langelioAukstis) + langelioAukstis - 20) / langeliuSk_H);
             updownOffset = Math.round((image.height % langelioAukstis) / 2);
         }
-
 
 
     } else {
@@ -101,8 +156,6 @@ function isdelioti(image) {
         }
 
     }
-
-    console.log("plotis: " + image.width + " aukstis: " + image.height);
 
 
     let resize = w / image.width;   /* originali nuotrauka vis dar seno dydzio, reikalingas koeficientas perskaiciavimui*/
@@ -126,77 +179,81 @@ function isdelioti(image) {
             let ctx = detale.atvaizdas.getContext('2d');
 
             let tempCanvas = document.createElement("canvas");
-            tempCanvas.width = langelioPlotis + 20;
-            tempCanvas.height = langelioAukstis + 20;
+            tempCanvas.width = langelioPlotis + 16;  /* "liezuvelio" issikisimas x 2*/
+            tempCanvas.height = langelioAukstis + 16;
             let tempCtx = tempCanvas.getContext('2d');
             tempCtx.drawImage(image, Math.round(langelioPlotis*j*resize), Math.round(langelioAukstis*i*resize), Math.round(detale.atvaizdas.width*resize), Math.round(detale.atvaizdas.height*resize), 0, 0, detale.atvaizdas.width, detale.atvaizdas.height);
             let pattern = ctx.createPattern(tempCanvas, 'repeat');
             ctx.fillStyle = pattern;
 
-            ctx.beginPath();
-            ctx.moveTo(10, 10);
+
+
+            // DETALES PIESINYS
+
+
             let ikiArc = Math.round(langelioPlotis / 2) - 10;
             let ikiCen = Math.round(langelioPlotis / 2);
             let ikiArcH = Math.round(langelioAukstis / 2) - 10;
             let ikiCenH = Math.round(langelioAukstis / 2);
-            let lp = 10 + langelioPlotis;
-            let la = 10 + langelioAukstis;
+
+            let ik = 8;                     /* "liezuvelio" issikisimas ir apskritimuko skersmuo*/
+            let lx = ik + langelioPlotis;
+            let ly = ik + langelioAukstis;
+            let cx = ik + Math.round(langelioPlotis / 2);  /*liezuvelio apskritimo centras*/
+            let cy = ik + Math.round(langelioAukstis / 2);
+
+
+
+            ctx.beginPath();
+            ctx.moveTo(ik, ik);
 
             switch (rinkinys[k].sieneles.s1) {
                 case 0:
-                    ctx.lineTo(lp, 10);
+                    ctx.lineTo(lx, ik);
                     break;
                 case 1:
-                    ctx.lineTo(10 + ikiArc, 10);
-                    ctx.arc(10 + ikiCen, 10, 10, 1*Math.PI, 0);
-                    ctx.lineTo(la, 10);
+                    ctx.arc(cx, ik, ik, 0.9*Math.PI, 0.1*Math.PI);
+                    ctx.lineTo(lx, ik);
                     break
                 case 2:
-                    ctx.lineTo(10 + ikiArc, 10);
-                    ctx.arc(10 + ikiCen, 10, 10, 1*Math.PI, 0, true);
-                    ctx.lineTo(la, 10);
+                    ctx.arc(cx, ik, ik, 1.1*Math.PI, 1.9*Math.PI, true);
+                    ctx.lineTo(lx, ik);
             }
             switch (rinkinys[k].sieneles.s2) {
                 case 0:
-                    ctx.lineTo(lp, la);
+                    ctx.lineTo(lx, ly);
                     break;
                 case 1:
-                    ctx.lineTo(lp, 10 + ikiArc);
-                    ctx.arc(lp, 10 + ikiCen, 10, 1.5*Math.PI, 0.5*Math.PI);
-                    ctx.lineTo(lp, la);
+                    ctx.arc(lx, cy, ik, 1.4*Math.PI, 0.6*Math.PI);
+                    ctx.lineTo(lx, ly);
                 break
                 case 2:
-                    ctx.lineTo(lp, 10 + ikiArc);
-                    ctx.arc(lp, 10 + ikiCen, 10, 1.5*Math.PI, 0.5*Math.PI, true);
-                    ctx.lineTo(lp, la);
+                    ctx.arc(lx, cy, ik, 1.6*Math.PI, 0.4*Math.PI, true);
+                    ctx.lineTo(lx, ly);
             }
             switch (rinkinys[k].sieneles.s3) {
                 case 0:
-                    ctx.lineTo(10, la);
+                    ctx.lineTo(ik, ly);
                     break;
                 case 1:
-                    ctx.lineTo(lp - ikiArc, la);
-                    ctx.arc(lp - ikiCen, lp, 10, 0, 1*Math.PI);
-                    ctx.lineTo(10, la);
+                    ctx.arc(cx, ly, ik, 1.9*Math.PI, 1.1*Math.PI);
+                    ctx.lineTo(ik, ly);
                     break
                 case 2:
-                    ctx.lineTo(lp - ikiArc, la);
-                    ctx.arc(lp - ikiCen, la, 10, 0, 1*Math.PI, true);
-                    ctx.lineTo(10, la);
+                    ctx.arc(cx, ly, ik, 0.1*Math.PI, 0.9*Math.PI, true);
+                    ctx.lineTo(ik, ly);
             }
             switch (rinkinys[k].sieneles.s4) {
                 case 0:
-                    ctx.lineTo(10, 10);
+                    ctx.lineTo(ik, ik);
                     break;
                 case 1:
-                    ctx.lineTo(10, la - ikiArc);
-                    ctx.arc(10, la - ikiCen, 10, 0.5*Math.PI, 1.5*Math.PI);
-                    ctx.lineTo(10, 10);
+                    ctx.arc(ik, cy, ik, 0.5*Math.PI, 1.6*Math.PI);
+                    ctx.lineTo(ik, ik);
                     break
                 case 2:
-                    ctx.lineTo(10, la - ikiArc);
-                    ctx.arc(10, la - ikiCen, 10, 0.5*Math.PI, 1.5*Math.PI, true);
-                    ctx.lineTo(10, 10);
+                    ctx.arc(ik, cy, ik, 0.6*Math.PI, 1.4*Math.PI, true);
+                    ctx.lineTo(ik, ik);
             }
                 ctx.closePath();
                 ctx.fill();
@@ -245,9 +302,80 @@ function paruostiStala() {
         }
 }
 
-function pradzia() {
+function pradzia(id) {
+
+
+
+    let puslapis = document.getElementById("puslapis");   /* istrinam viska is puslapio ir pakraunam pasirinkta turini*/
+
+    while (puslapis.firstChild) {
+        puslapis.removeChild(puslapis.firstChild);
+    }
+
+    let im = document.createElement("img");
+    im.setAttribute("class", "flyer");
+    im.setAttribute("id", "visa-nuotrauka");
+
+    let source = "";
+
+    switch (id) {
+        case 1:
+            source = "img/katinas.jpg";
+            break;
+        case 2:
+            source = "img/ramybe.jpg";
+            break;
+        case 3:
+            source = "img/goddess.jpg";
+            break;
+        case 4:
+            source = "img/lengvumas.jpg";
+            break;
+        case 5:
+            source = "img/drasa.jpg";
+            break;
+        case 6:
+            source = "img/siela.jpg";
+            break;
+    }
+
+
+    im.setAttribute("src", source);
+    im.setAttribute("alt", "no image");
+    im.setAttribute("draggable", "true");
+    im.setAttribute("ondragstart", "traukti(event)");
+    puslapis.appendChild(im);
+
+    let dezes = document.createElement("div");
+    dezes.setAttribute("class", "dezes");
+    puslapis.appendChild(dezes);
+
+    let detales = document.createElement("div");
+    detales.setAttribute("class", "deze");
+    detales.setAttribute("id", "detales");
+    detales.setAttribute("ondrop", "padetiIVieta(event)");
+    detales.setAttribute("ondragover", "leisti(event)");
+    dezes.appendChild(detales);
+
+    let stalokonteineris = document.createElement("div");
+    stalokonteineris.setAttribute("class", "stalas-container");
+    stalokonteineris.setAttribute("id", "stalokonteineris");
+    dezes.appendChild(stalokonteineris);
+
+    let remas = document.createElement("img");
+    remas.setAttribute("id", "remas");
+    remas.setAttribute("src", "");
+    stalokonteineris.appendChild(remas);
+
+    let delione = document.createElement("div");
+    delione.setAttribute("id", "delione");
+    delione.setAttribute("class", "stalas");
+    stalokonteineris.appendChild(delione);
+
+
+
     let image = new Image();
-    image.src = 'img/drasa.jpg';
+    image.src = source;
     image.onload = function(){
         isdelioti(image);
     }

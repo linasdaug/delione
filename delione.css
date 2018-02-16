@@ -64,6 +64,8 @@ a {
     width: 25%;
     transform: scale(0.5, 0.5);
     transition: transform 1s;
+    transition-delay: 1s;
+    z-index: 2;
 }
 
 #visa-nuotrauka:hover {
@@ -98,7 +100,7 @@ a {
     top: 10px;
     left: 10px;
     z-index: 1;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.95);
 }
 
 
@@ -131,8 +133,9 @@ a {
 
 .padetas {
     position: absolute;
-    top: -10px;
-    left: -10px;
+    top: -8px;
+    left: -8px;
+    z-index: 1;
 }
 
 footer {
