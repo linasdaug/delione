@@ -1,0 +1,148 @@
+* {
+    box-sizing: border-box;
+    font-family: "Open Sans";
+    transition: all 0.2s;
+}
+
+body {
+    background: url('img/fonelis.jpg') repeat;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.titulinis-heading {
+    width: 100%;
+    margin: 25px 0;
+    background-color: rgba(250,235,215, 0.7);
+    text-align: center;
+}
+
+.titulinis-heading h1 {
+    color: grey;
+    padding: 25px;
+}
+
+.titulinis-list {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.titulinis-thumbnail {
+    background-color: rgba(250,235,215, 0.7);
+    text-align: center;
+    color: grey;
+    box-shadow: 2px 2px 2px grey;
+    margin: 25px;
+}
+
+.titulinis-thumbnail img {
+    width: 95%;
+    max-width: 200px;
+    margin: 10px;
+}
+
+.titulinis-thumbnail h4 {
+    padding: 10px;
+}
+
+
+#visa-nuotrauka {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 25%;
+    transform: scale(0.5, 0.5);
+    transition: transform 1s;
+    transition-delay: 1s;
+    z-index: 2;
+}
+
+#visa-nuotrauka:hover {
+    transform: scale(1, 1);
+}
+
+.pavyzdys h2 {
+    padding-top: 25px;
+}
+
+.dezes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.stalas-container {
+    min-width: 520px;
+    min-height: 520px;
+    position: relative;
+    margin: 50px 25px;
+}
+
+.stalas-container img {
+    width: 100%;
+}
+
+.stalas {
+    position: absolute;
+    min-width: 500px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+
+.stalas, .deze {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.deze {
+    max-width: 400px;
+    align-items: flex-start;
+    min-height: 55px;
+}
+
+.palaidas {
+    height: 50px;
+    margin: 2px;
+    transition: all 0.5s;
+}
+
+.palaidas:hover {
+    transform: scale(1.5, 1.5);
+}
+
+.langelis {
+    border: 1px dotted antiquewhite;
+    position: relative;
+}
+
+.padetas {
+    position: absolute;
+    top: -9px;
+    left: -9px;
+    z-index: 1;
+}
+
+footer {
+    text-align: center;
+}
+
+.footer-info {
+    padding: 25px;
+    color: grey;
+}
